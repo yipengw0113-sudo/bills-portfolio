@@ -166,15 +166,21 @@ const copy = {
     trendFinanceNotes: "Trend and finance notes",
     openFinance: "Open external finance page",
     analyzerEyebrow: "CFA-style stock analyzer",
-    analyzerTitle: "Turn a ticker and a few fundamentals into valuation signals.",
+    analyzerTitle: "Start with live market statistics, then add optional fundamentals when you have them.",
     eps: "EPS",
+    epsOptional: "EPS override (optional)",
     bookValue: "Book value per share",
+    bookValueOptional: "Book value/share override",
     annualDividend: "Annual dividend per share",
+    annualDividendOptional: "Annual dividend/share override",
     revenueGrowth: "Revenue growth %",
+    revenueGrowthOptional: "Revenue growth % override",
     roe: "ROE %",
+    roeOptional: "ROE % override",
     debtEquity: "Debt / Equity",
+    debtEquityOptional: "Debt / Equity override",
     analyzeStock: "Analyze Stock",
-    analysisStatusDefault: "Add assumptions and run the analyzer.",
+    analysisStatusDefault: "Enter a ticker. Optional fundamentals are overrides, not live API data.",
     educationalNote: "This is an educational framework, not a buy or sell recommendation.",
     footerNote: "Bill's Portfolio is a learning project. It is not financial advice.",
     invalidHolding: "Please enter a ticker, invested amount, and shares greater than zero.",
@@ -182,7 +188,23 @@ const copy = {
     fetchingPrice: "Fetching latest price for {symbol}...",
     retrievingQuote: "Retrieving latest quote for {symbol}...",
     latestPrice: "{symbol} latest available price: {currency} {price}",
-    analyzerNeedsQuote: "The analyzer needs a live quote plus your manual assumptions.",
+    analyzerNeedsQuote: "The analyzer needs a live quote. Optional fundamentals can be added as overrides.",
+    liveMarket: "Live Market",
+    dayRange: "Day Range",
+    dayRangeNote: "Intraday low and high from the latest quote.",
+    previousClose: "Previous Close",
+    previousCloseNote: "Reference price from the previous trading session.",
+    quoteVolume: "Volume",
+    quoteVolumeNote: "Latest available trading volume.",
+    fiftyTwoWeekRange: "52W Range",
+    fiftyTwoWeekRangeNote: "One-year low and high calculated from historical price data.",
+    oneYearReturn: "1Y Price Return",
+    oneYearReturnNote: "Price change from the first to last available daily close.",
+    maxDrawdown: "Max Drawdown",
+    maxDrawdownNote: "Largest peak-to-trough decline in the selected one-year history.",
+    dataSourceNote: "Live market statistics update with the ticker. P/E, P/B, dividend yield, ROE, and leverage require fundamentals; enter them only if you have reliable figures.",
+    manualFundamentals: "Manual Fundamentals",
+    notProvided: "Not provided",
     peRatio: "P/E Ratio",
     peNote: "Price divided by EPS. Higher can mean strong growth expectations or expensive valuation.",
     pbRatio: "P/B Ratio",
@@ -330,15 +352,21 @@ const copy = {
     trendFinanceNotes: "趋势与财务提示",
     openFinance: "打开外部财经页面",
     analyzerEyebrow: "CFA 风格股票分析器",
-    analyzerTitle: "用代码和关键基本面数据生成估值信号。",
+    analyzerTitle: "先用实时市场统计，再在你有可靠数据时加入可选基本面。",
     eps: "每股收益 EPS",
+    epsOptional: "EPS 覆盖值（可选）",
     bookValue: "每股账面价值",
+    bookValueOptional: "每股账面价值覆盖值",
     annualDividend: "每股年度股息",
+    annualDividendOptional: "每股年度股息覆盖值",
     revenueGrowth: "收入增长 %",
+    revenueGrowthOptional: "收入增长 % 覆盖值",
     roe: "ROE %",
+    roeOptional: "ROE % 覆盖值",
     debtEquity: "负债 / 权益",
+    debtEquityOptional: "负债 / 权益覆盖值",
     analyzeStock: "分析股票",
-    analysisStatusDefault: "输入假设后运行分析器。",
+    analysisStatusDefault: "输入代码。可选基本面是手动覆盖值，不是实时 API 数据。",
     educationalNote: "这是教育性分析框架，不构成买入或卖出建议。",
     footerNote: "Bill's Portfolio 是学习项目，不构成财务建议。",
     invalidHolding: "请输入代码、投入金额，以及大于 0 的股数。",
@@ -346,7 +374,23 @@ const copy = {
     fetchingPrice: "正在获取 {symbol} 的最新价格...",
     retrievingQuote: "正在获取 {symbol} 的最新报价...",
     latestPrice: "{symbol} 最新可用价格：{currency} {price}",
-    analyzerNeedsQuote: "分析器需要实时报价和你手动输入的假设。",
+    analyzerNeedsQuote: "分析器需要实时报价。可选基本面可以作为手动覆盖值加入。",
+    liveMarket: "实时市场",
+    dayRange: "日内区间",
+    dayRangeNote: "最新报价中的日内低点和高点。",
+    previousClose: "前收盘价",
+    previousCloseNote: "上一交易日的参考价格。",
+    quoteVolume: "成交量",
+    quoteVolumeNote: "最新可用成交量。",
+    fiftyTwoWeekRange: "52周区间",
+    fiftyTwoWeekRangeNote: "根据一年历史价格计算的低点和高点。",
+    oneYearReturn: "1年价格收益",
+    oneYearReturnNote: "从可用日收盘价起点到终点的价格变化。",
+    maxDrawdown: "最大回撤",
+    maxDrawdownNote: "一年历史中从高点到低点的最大跌幅。",
+    dataSourceNote: "实时市场统计会随代码更新。P/E、P/B、股息率、ROE 和杠杆需要基本面数据；只有在你有可靠数据时再填写。",
+    manualFundamentals: "手动基本面",
+    notProvided: "未提供",
     peRatio: "市盈率 P/E",
     peNote: "价格除以 EPS。较高数值可能代表高成长预期，也可能代表估值偏贵。",
     pbRatio: "市净率 P/B",
@@ -805,6 +849,50 @@ function formatPercent(value) {
   return `${value.toFixed(2)}%`;
 }
 
+function formatLargeNumber(value) {
+  if (!Number.isFinite(value)) {
+    return "--";
+  }
+  return new Intl.NumberFormat("en-US", {
+    notation: "compact",
+    maximumFractionDigits: 2,
+  }).format(value);
+}
+
+function optionalNumber(input) {
+  const value = Number(input.value);
+  return input.value === "" || !Number.isFinite(value) ? Number.NaN : value;
+}
+
+function calculateMaxDrawdown(values) {
+  let peak = values[0]?.close || 0;
+  let maxDrawdown = 0;
+
+  values.forEach((point) => {
+    peak = Math.max(peak, point.close);
+    if (peak > 0) {
+      maxDrawdown = Math.min(maxDrawdown, (point.close - peak) / peak);
+    }
+  });
+
+  return maxDrawdown * 100;
+}
+
+function calculateAnnualizedVolatility(closes) {
+  if (closes.length < 3) {
+    return Number.NaN;
+  }
+
+  const returns = [];
+  for (let index = 1; index < closes.length; index += 1) {
+    returns.push(Math.log(closes[index] / closes[index - 1]));
+  }
+
+  const mean = average(returns);
+  const variance = average(returns.map((value) => (value - mean) ** 2));
+  return Math.sqrt(variance) * Math.sqrt(252) * 100;
+}
+
 function metricCard(label, value, note) {
   return `
     <article class="ratio-card">
@@ -838,6 +926,12 @@ function buildInterpretation({ peRatio, pbRatio, dividendYield, revenueGrowth, r
     signals.push(currentLanguage === "zh" ? "股息对总回报有明显贡献" : "dividends contribute meaningfully to total return");
   }
 
+  if (!signals.length) {
+    return currentLanguage === "zh"
+      ? "实时市场指标已更新。基本面估值需要你输入可靠的 EPS、账面价值、股息、ROE 或杠杆数据。"
+      : "Live market indicators updated. Fundamental valuation needs reliable EPS, book value, dividend, ROE, or leverage inputs.";
+  }
+
   return signals.join(currentLanguage === "zh" ? "；" : "; ") + (currentLanguage === "zh" ? "。" : ".");
 }
 
@@ -854,18 +948,32 @@ async function analyzeStock(event) {
   ratioGrid.innerHTML = "";
 
   try {
-    const quote = await getQuote(symbol);
+    const [quote, history] = await Promise.all([
+      getQuote(symbol),
+      getTimeSeries(symbol, "1Y").catch(() => null),
+    ]);
     const price = Number(quote.close || quote.price);
-    const eps = Number(epsInput.value);
-    const bookValue = Number(bookValueInput.value);
-    const dividend = Number(dividendInput.value);
-    const revenueGrowth = Number(growthInput.value);
-    const roe = Number(roeInput.value);
-    const debtEquity = Number(debtEquityInput.value);
+    const eps = optionalNumber(epsInput);
+    const bookValue = optionalNumber(bookValueInput);
+    const dividend = optionalNumber(dividendInput);
+    const revenueGrowth = optionalNumber(growthInput);
+    const roe = optionalNumber(roeInput);
+    const debtEquity = optionalNumber(debtEquityInput);
 
     const peRatio = price / eps;
     const pbRatio = price / bookValue;
     const dividendYield = (dividend / price) * 100;
+    const dayLow = Number(quote.low);
+    const dayHigh = Number(quote.high);
+    const previousClose = Number(quote.previous_close);
+    const quoteVolume = Number(quote.volume);
+    const historyValues = history?.values || [];
+    const historyCloses = historyValues.map((point) => point.close).filter(Number.isFinite);
+    const yearLow = historyValues.length ? Math.min(...historyValues.map((point) => Number.isFinite(point.low) ? point.low : point.close)) : Number.NaN;
+    const yearHigh = historyValues.length ? Math.max(...historyValues.map((point) => Number.isFinite(point.high) ? point.high : point.close)) : Number.NaN;
+    const yearReturn = historyCloses.length > 1 ? ((historyCloses[historyCloses.length - 1] - historyCloses[0]) / historyCloses[0]) * 100 : Number.NaN;
+    const drawdown = historyValues.length > 1 ? calculateMaxDrawdown(historyValues) : Number.NaN;
+    const volatility = calculateAnnualizedVolatility(historyCloses);
 
     analysisStatus.textContent = t("latestPrice", {
       symbol: quote.name || symbol,
@@ -873,12 +981,20 @@ async function analyzeStock(event) {
       price: price.toFixed(2),
     });
     ratioGrid.innerHTML = [
-      metricCard(t("peRatio"), formatMultiple(peRatio), t("peNote")),
-      metricCard(t("pbRatio"), formatMultiple(pbRatio), t("pbNote")),
-      metricCard(t("dividendYield"), formatPercent(dividendYield), t("dividendNote")),
-      metricCard(t("revenueGrowthCard"), formatPercent(revenueGrowth), t("revenueNote")),
-      metricCard("ROE", formatPercent(roe), t("roeNote")),
-      metricCard(t("debtEquity"), formatMultiple(debtEquity), t("debtNote")),
+      metricCard(t("liveMarket"), formatCurrencyValue(price, quote.currency || "USD"), t("dataSourceNote")),
+      metricCard(t("dayRange"), Number.isFinite(dayLow) && Number.isFinite(dayHigh) ? `${dayLow.toFixed(2)} / ${dayHigh.toFixed(2)}` : "--", t("dayRangeNote")),
+      metricCard(t("previousClose"), formatCurrencyValue(previousClose, quote.currency || "USD"), t("previousCloseNote")),
+      metricCard(t("quoteVolume"), formatLargeNumber(quoteVolume), t("quoteVolumeNote")),
+      metricCard(t("fiftyTwoWeekRange"), Number.isFinite(yearLow) && Number.isFinite(yearHigh) ? `${yearLow.toFixed(2)} / ${yearHigh.toFixed(2)}` : "--", t("fiftyTwoWeekRangeNote")),
+      metricCard(t("oneYearReturn"), formatPercent(yearReturn), t("oneYearReturnNote")),
+      metricCard(t("annualizedVolatility"), formatPercent(volatility), t("annualizedVolatilityNote")),
+      metricCard(t("maxDrawdown"), formatPercent(drawdown), t("maxDrawdownNote")),
+      metricCard(t("peRatio"), Number.isFinite(peRatio) ? formatMultiple(peRatio) : t("notProvided"), t("peNote")),
+      metricCard(t("pbRatio"), Number.isFinite(pbRatio) ? formatMultiple(pbRatio) : t("notProvided"), t("pbNote")),
+      metricCard(t("dividendYield"), Number.isFinite(dividendYield) ? formatPercent(dividendYield) : t("notProvided"), t("dividendNote")),
+      metricCard(t("revenueGrowthCard"), Number.isFinite(revenueGrowth) ? formatPercent(revenueGrowth) : t("notProvided"), t("revenueNote")),
+      metricCard("ROE", Number.isFinite(roe) ? formatPercent(roe) : t("notProvided"), t("roeNote")),
+      metricCard(t("debtEquity"), Number.isFinite(debtEquity) ? formatMultiple(debtEquity) : t("notProvided"), t("debtNote")),
     ].join("");
     analysisNote.textContent = buildInterpretation({ peRatio, pbRatio, dividendYield, revenueGrowth, roe, debtEquity });
   } catch (error) {
