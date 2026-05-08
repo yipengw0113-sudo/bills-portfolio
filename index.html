@@ -14,27 +14,34 @@
       </a>
 
       <nav class="nav-links" aria-label="Primary navigation">
-        <a href="#features">Features</a>
-        <a href="#strategy">Strategy</a>
-        <a href="#preview">Preview</a>
-        <a href="#analyzer">Analyzer</a>
+        <button class="tab-link active" type="button" data-tab="dashboard" data-i18n="navDashboard">Dashboard</button>
+        <button class="tab-link" type="button" data-tab="trends" data-i18n="navTrends">Trends</button>
+        <button class="tab-link" type="button" data-tab="quote" data-i18n="navQuote">Quote</button>
+        <button class="tab-link" type="button" data-tab="analyzer" data-i18n="navAnalyzer">Analyzer</button>
+        <button class="tab-link" type="button" data-tab="learn" data-i18n="navLearn">Learn</button>
       </nav>
 
-      <a class="header-action" href="#start">Start Tracking</a>
+      <div class="header-tools">
+        <button class="language-toggle" id="languageToggle" type="button" aria-label="Change language">
+          <span class="globe-icon" aria-hidden="true"></span>
+          <span id="languageLabel">中文</span>
+        </button>
+        <button class="header-action" type="button" data-tab="dashboard" data-i18n="startTracking">Start Tracking</button>
+      </div>
     </header>
 
     <main id="top">
-      <section class="hero">
+      <section class="hero app-view" data-view="dashboard">
         <div class="hero-copy">
-          <p class="eyebrow">Portfolio clarity for self-directed investors</p>
-          <h1>Build a sharper view of your money before you make the next move.</h1>
-          <p class="hero-text">
+          <p class="eyebrow" data-i18n="heroEyebrow">Portfolio clarity for self-directed investors</p>
+          <h1 data-i18n="heroTitle">Build a sharper view of your money before you make the next move.</h1>
+          <p class="hero-text" data-i18n="heroText">
             Track holdings, compare asset allocation, and turn messy investment notes
             into a calm dashboard built around risk, return, and discipline.
           </p>
           <div class="hero-actions" id="start">
-            <a class="primary-button" href="#preview">View Dashboard</a>
-            <a class="secondary-button" href="#strategy">Explore Strategy</a>
+            <button class="primary-button" type="button" data-tab="dashboard" data-i18n="addHoldings">Add Holdings</button>
+            <button class="secondary-button" type="button" data-tab="trends" data-i18n="openCharts">Open Charts</button>
           </div>
         </div>
 
@@ -46,185 +53,345 @@
           </div>
           <div class="portfolio-summary">
             <div>
-              <p>Total Portfolio</p>
-              <strong>$128,420</strong>
+              <p data-i18n="totalPortfolio">Total Portfolio</p>
+              <strong id="heroPortfolioValue">$0</strong>
             </div>
-            <div class="gain-badge">+12.8%</div>
+            <div class="gain-badge" id="heroPortfolioReturn" data-i18n="addHoldingsLower">Add holdings</div>
           </div>
           <div class="allocation-chart" aria-hidden="true">
-            <span class="bar equity"></span>
-            <span class="bar etf"></span>
-            <span class="bar bond"></span>
-            <span class="bar cash"></span>
+            <span class="bar equity" id="equityBar"></span>
+            <span class="bar etf" id="etfBar"></span>
+            <span class="bar bond" id="bondBar"></span>
+            <span class="bar cash" id="cashBar"></span>
           </div>
           <div class="holding-list">
             <div>
-              <span>Equity</span>
-              <strong>46%</strong>
+              <span data-i18n="trackedValue">Tracked Value</span>
+              <strong id="trackedValueShare">0%</strong>
             </div>
             <div>
-              <span>ETF</span>
-              <strong>32%</strong>
+              <span data-i18n="invested">Invested</span>
+              <strong id="investedShare">0%</strong>
             </div>
             <div>
-              <span>Bonds</span>
-              <strong>14%</strong>
+              <span data-i18n="gainLoss">Gain/Loss</span>
+              <strong id="gainShare">0%</strong>
             </div>
             <div>
-              <span>Cash</span>
-              <strong>8%</strong>
+              <span data-i18n="cashBuffer">Cash Buffer</span>
+              <strong>--</strong>
             </div>
           </div>
         </div>
       </section>
 
-      <section class="metrics" aria-label="Portfolio metrics">
+      <section class="metrics app-view" data-view="dashboard" aria-label="Portfolio metrics">
         <article>
-          <span>Risk Score</span>
+          <span data-i18n="riskScore">Risk Score</span>
           <strong id="riskScore">68</strong>
         </article>
         <article>
-          <span>Holdings</span>
-          <strong>18</strong>
+          <span data-i18n="holdings">Holdings</span>
+          <strong id="holdingCount">0</strong>
         </article>
         <article>
-          <span>Monthly Contribution</span>
-          <strong>$1,200</strong>
+          <span data-i18n="investedCapital">Invested Capital</span>
+          <strong id="investedCapital">$0</strong>
         </article>
         <article>
-          <span>Target Return</span>
-          <strong>9.5%</strong>
+          <span data-i18n="unrealizedGain">Unrealized Gain</span>
+          <strong id="unrealizedGain">$0</strong>
         </article>
       </section>
 
-      <section class="section" id="features">
+      <section class="section holdings-section app-view" id="holdings" data-view="dashboard">
         <div class="section-heading">
-          <p class="eyebrow">What it helps you see</p>
-          <h2>One workspace for portfolio decisions.</h2>
+          <p class="eyebrow" data-i18n="trackerEyebrow">Portfolio tracker</p>
+          <h2 data-i18n="trackerTitle">Enter your holdings and calculate unrealized return.</h2>
+        </div>
+
+        <div class="holdings-layout">
+          <form class="holding-form" id="holdingForm">
+            <label>
+              <span data-i18n="ticker">Ticker</span>
+              <input id="holdingTicker" type="text" value="AAPL" autocomplete="off" />
+            </label>
+            <label>
+              <span data-i18n="purchaseDate">Purchase date</span>
+              <input id="purchaseDate" type="date" />
+            </label>
+            <label>
+              <span data-i18n="avgCost">Average cost</span>
+              <input id="avgCostInput" type="number" min="0" step="0.01" value="200" />
+            </label>
+            <label>
+              <span data-i18n="sharesUnits">Shares / units</span>
+              <input id="shareAmountInput" type="number" min="0" step="0.0001" value="5" />
+            </label>
+            <label>
+              <span data-i18n="assetType">Asset type</span>
+              <select id="assetTypeInput">
+                <option value="Equity" data-i18n="assetEquity">Equity</option>
+                <option value="ETF" data-i18n="assetEtf">ETF</option>
+                <option value="Bond" data-i18n="assetBond">Bond</option>
+                <option value="Cash" data-i18n="assetCash">Cash</option>
+              </select>
+            </label>
+            <label>
+              <span data-i18n="accountType">Account</span>
+              <select id="accountTypeInput">
+                <option value="TFSA">TFSA</option>
+                <option value="RRSP">RRSP</option>
+                <option value="FHSA">FHSA</option>
+                <option value="Taxable" data-i18n="accountTaxable">Taxable</option>
+              </select>
+            </label>
+            <button type="submit" data-i18n="addHolding">Add Holding</button>
+            <button class="secondary-form-button" id="runPortfolioAnalysis" type="button" data-i18n="runPortfolioAnalysis">Run Historical Analysis</button>
+          </form>
+
+          <div class="holdings-table-wrap">
+            <table class="holdings-table">
+              <thead>
+                <tr>
+                  <th data-i18n="ticker">Ticker</th>
+                  <th data-i18n="accountType">Account</th>
+                  <th data-i18n="assetType">Asset type</th>
+                  <th data-i18n="date">Date</th>
+                  <th data-i18n="avgCost">Average cost</th>
+                  <th data-i18n="shares">Shares</th>
+                  <th data-i18n="price">Price</th>
+                  <th data-i18n="value">Value</th>
+                  <th data-i18n="allocation">Allocation</th>
+                  <th data-i18n="gainLoss">Gain/Loss</th>
+                  <th data-i18n="return">Return</th>
+                </tr>
+              </thead>
+              <tbody id="holdingsBody">
+                <tr>
+                  <td colspan="11" data-i18n="emptyHoldings">Add a holding to start tracking your portfolio.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="portfolio-analytics">
+          <div>
+            <p class="eyebrow" data-i18n="portfolioAnalyticsEyebrow">Historical analytics</p>
+            <h3 data-i18n="portfolioAnalyticsTitle">Use one year of prices to estimate risk and possible outcomes.</h3>
+          </div>
+          <div class="analysis-grid" id="portfolioAnalyticsGrid">
+            <article class="ratio-card">
+              <span data-i18n="analyticsWaiting">Waiting for holdings</span>
+              <strong>--</strong>
+              <p data-i18n="analyticsWaitingNote">Add holdings, then run the historical analysis.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section app-view" id="features" data-view="learn" hidden>
+        <div class="section-heading">
+          <p class="eyebrow" data-i18n="featuresEyebrow">What it helps you see</p>
+          <h2 data-i18n="featuresTitle">One workspace for portfolio decisions.</h2>
         </div>
 
         <div class="feature-grid">
           <article>
             <div class="feature-icon">01</div>
-            <h3>Allocation Map</h3>
-            <p>Understand how much of your money sits in equity, ETFs, bonds, mutual funds, and cash.</p>
+            <h3 data-i18n="featureAllocation">Allocation Map</h3>
+            <p data-i18n="featureAllocationText">Understand how much of your money sits in equity, ETFs, bonds, mutual funds, and cash.</p>
           </article>
           <article>
             <div class="feature-icon">02</div>
-            <h3>Return Tracking</h3>
-            <p>Compare cost, current value, unrealized gains, and contribution behavior over time.</p>
+            <h3 data-i18n="featureReturn">Return Tracking</h3>
+            <p data-i18n="featureReturnText">Compare cost, current value, unrealized gains, and contribution behavior over time.</p>
           </article>
           <article>
             <div class="feature-icon">03</div>
-            <h3>Decision Notes</h3>
-            <p>Capture why you bought, sold, or held an asset so your future self can audit the logic.</p>
+            <h3 data-i18n="featureNotes">Decision Notes</h3>
+            <p data-i18n="featureNotesText">Capture why you bought, sold, or held an asset so your future self can audit the logic.</p>
           </article>
         </div>
       </section>
 
-      <section class="strategy-band" id="strategy">
+      <section class="strategy-band app-view" id="strategy" data-view="learn" hidden>
         <div>
-          <p class="eyebrow">Beginner-friendly strategy</p>
-          <h2>High return starts with a clear process, not random confidence.</h2>
+          <p class="eyebrow" data-i18n="strategyEyebrow">Beginner-friendly strategy</p>
+          <h2 data-i18n="strategyTitle">High return starts with a clear process, not random confidence.</h2>
         </div>
         <div class="strategy-list">
-          <p><strong>Define:</strong> time horizon, goal, account type, and risk tolerance.</p>
-          <p><strong>Diversify:</strong> balance growth assets with stabilizers like bonds and cash.</p>
-          <p><strong>Review:</strong> rebalance based on rules instead of emotional market timing.</p>
+          <p data-i18n="strategyDefine"><strong>Define:</strong> time horizon, goal, account type, and risk tolerance.</p>
+          <p data-i18n="strategyDiversify"><strong>Diversify:</strong> balance growth assets with stabilizers like bonds and cash.</p>
+          <p data-i18n="strategyReview"><strong>Review:</strong> rebalance based on rules instead of emotional market timing.</p>
         </div>
       </section>
 
-      <section class="section preview-section" id="preview">
+      <section class="section preview-section app-view" id="preview" data-view="learn" hidden>
         <div class="section-heading">
-          <p class="eyebrow">Interactive preview</p>
-          <h2>Adjust the equity weight and watch the profile change.</h2>
+          <p class="eyebrow" data-i18n="previewEyebrow">Interactive preview</p>
+          <h2 data-i18n="previewTitle">Adjust the equity weight and watch the profile change.</h2>
         </div>
 
         <div class="calculator">
           <div class="slider-card">
-            <label for="equityRange">Equity allocation</label>
+            <label for="equityRange" data-i18n="equityAllocation">Equity allocation</label>
             <input id="equityRange" type="range" min="20" max="90" value="60" />
             <div class="slider-output">
               <span id="equityValue">60%</span>
-              <span id="profileLabel">Balanced Growth</span>
+              <span id="profileLabel" data-i18n="balancedGrowth">Balanced Growth</span>
             </div>
           </div>
 
           <div class="result-card">
-            <p>Estimated volatility profile</p>
-            <strong id="volatilityValue">Medium</strong>
-            <span id="guidanceText">A growth-focused mix with room for stabilizing assets.</span>
+            <p data-i18n="volatilityProfile">Estimated volatility profile</p>
+            <strong id="volatilityValue" data-i18n="medium">Medium</strong>
+            <span id="guidanceText" data-i18n="balancedGuidance">A growth-focused mix with room for stabilizing assets.</span>
           </div>
         </div>
       </section>
 
-      <section class="section market-section" id="market">
+      <section class="section market-section app-view" id="market" data-view="quote" hidden>
         <div class="section-heading">
-          <p class="eyebrow">Live market data</p>
-          <h2>Check a stock or ETF quote from Twelve Data.</h2>
+          <p class="eyebrow" data-i18n="marketEyebrow">Live market data</p>
+          <h2 data-i18n="marketTitle">Check a stock or ETF quote from Twelve Data.</h2>
         </div>
 
         <div class="quote-tool">
           <form class="quote-form" id="quoteForm">
-            <label for="tickerInput">Ticker symbol</label>
+            <label for="tickerInput" data-i18n="tickerSymbol">Ticker symbol</label>
             <div class="quote-input-row">
               <input id="tickerInput" name="ticker" type="text" value="AAPL" autocomplete="off" />
-              <button type="submit">Get Quote</button>
+              <button type="submit" data-i18n="getQuote">Get Quote</button>
             </div>
           </form>
 
           <div class="quote-result" id="quoteResult" aria-live="polite">
-            <p>Enter a ticker to retrieve the latest available quote.</p>
+            <p data-i18n="quotePrompt">Enter a ticker to retrieve the latest available quote.</p>
           </div>
         </div>
       </section>
 
-      <section class="section analyzer-section" id="analyzer">
+      <section class="section trends-section app-view" id="trends" data-view="trends" hidden>
         <div class="section-heading">
-          <p class="eyebrow">CFA-style stock analyzer</p>
-          <h2>Turn a ticker and a few fundamentals into valuation signals.</h2>
+          <p class="eyebrow" data-i18n="trendsEyebrow">Market trends</p>
+          <h2 data-i18n="trendsTitle">Visualize stocks, index ETFs, and market data across time ranges.</h2>
+        </div>
+
+        <div class="trend-dashboard">
+          <div class="trend-controls">
+            <form class="trend-search" id="trendForm">
+              <label for="trendSymbol" data-i18n="symbol">Symbol</label>
+              <div class="quote-input-row">
+                <input id="trendSymbol" name="trendSymbol" type="text" value="AAPL" autocomplete="off" />
+                <button type="submit" data-i18n="chart">Chart</button>
+              </div>
+            </form>
+
+            <div class="quick-symbols" aria-label="Popular symbols">
+              <button type="button" data-symbol="AAPL">AAPL</button>
+              <button type="button" data-symbol="SPY">S&P 500</button>
+              <button type="button" data-symbol="QQQ">QQQ</button>
+              <button type="button" data-symbol="BABA">BABA</button>
+              <button type="button" data-symbol="0700.HK" data-i18n="tencent">Tencent</button>
+              <button type="button" data-symbol="000001.SZ" data-i18n="chinaA">China A</button>
+            </div>
+
+            <div class="range-buttons" aria-label="Chart range">
+              <button type="button" class="active" data-range="1D">1D</button>
+              <button type="button" data-range="5D">5D</button>
+              <button type="button" data-range="1W">1W</button>
+              <button type="button" data-range="1M">1M</button>
+              <button type="button" data-range="6M">6M</button>
+              <button type="button" data-range="1Y">1Y</button>
+            </div>
+          </div>
+
+          <div class="chart-card">
+            <div class="chart-header">
+              <div>
+                <p id="chartMeta">AAPL · 1D</p>
+                <strong id="chartPrice" data-i18n="loading">Loading...</strong>
+              </div>
+              <span id="chartChange">--</span>
+            </div>
+            <canvas id="priceChart" width="900" height="360" aria-label="Price trend chart"></canvas>
+            <p class="chart-message" id="chartMessage">
+              <span data-i18n="chartMessageDefault">SPY is used as an S&P 500 ETF proxy. International symbols depend on Twelve Data coverage and symbol format.</span>
+            </p>
+          </div>
+
+          <div class="chart-card kline-card">
+            <div class="chart-header">
+              <div>
+                <p data-i18n="kline">K-line</p>
+                <strong id="klineTitle" data-i18n="candlestick">Candlestick</strong>
+              </div>
+              <span id="volumeLabel" data-i18n="volume">Volume</span>
+            </div>
+            <canvas id="klineChart" width="900" height="420" aria-label="Candlestick K-line chart"></canvas>
+          </div>
+
+          <div class="market-analysis" id="marketAnalysis">
+            <div>
+              <p class="eyebrow" data-i18n="autoAnalysis">Automated analysis</p>
+              <h3 data-i18n="trendFinanceNotes">Trend and finance notes</h3>
+            </div>
+            <div class="analysis-grid" id="marketAnalysisGrid"></div>
+            <a class="finance-link" id="financeLink" href="https://finance.yahoo.com/quote/AAPL" target="_blank" rel="noreferrer">
+              <span data-i18n="openFinance">Open external finance page</span>
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <section class="section analyzer-section app-view" id="analyzer" data-view="analyzer" hidden>
+        <div class="section-heading">
+          <p class="eyebrow" data-i18n="analyzerEyebrow">CFA-style stock analyzer</p>
+          <h2 data-i18n="analyzerTitle">Turn a ticker and a few fundamentals into valuation signals.</h2>
         </div>
 
         <div class="analyzer-layout">
           <form class="analyzer-form" id="analysisForm">
             <label>
-              Ticker
+              <span data-i18n="ticker">Ticker</span>
               <input id="analysisTicker" type="text" value="AAPL" autocomplete="off" />
             </label>
             <label>
-              EPS
+              <span data-i18n="eps">EPS</span>
               <input id="epsInput" type="number" step="0.01" value="7.49" />
             </label>
             <label>
-              Book value per share
+              <span data-i18n="bookValue">Book value per share</span>
               <input id="bookValueInput" type="number" step="0.01" value="4.47" />
             </label>
             <label>
-              Annual dividend per share
+              <span data-i18n="annualDividend">Annual dividend per share</span>
               <input id="dividendInput" type="number" step="0.01" value="1.04" />
             </label>
             <label>
-              Revenue growth %
+              <span data-i18n="revenueGrowth">Revenue growth %</span>
               <input id="growthInput" type="number" step="0.1" value="6.4" />
             </label>
             <label>
-              ROE %
+              <span data-i18n="roe">ROE %</span>
               <input id="roeInput" type="number" step="0.1" value="149.8" />
             </label>
             <label>
-              Debt / Equity
+              <span data-i18n="debtEquity">Debt / Equity</span>
               <input id="debtEquityInput" type="number" step="0.01" value="1.87" />
             </label>
-            <button type="submit">Analyze Stock</button>
+            <button type="submit" data-i18n="analyzeStock">Analyze Stock</button>
           </form>
 
           <div class="analysis-output">
             <div class="analysis-status" id="analysisStatus">
-              Add assumptions and run the analyzer.
+              <span data-i18n="analysisStatusDefault">Add assumptions and run the analyzer.</span>
             </div>
             <div class="ratio-grid" id="ratioGrid"></div>
             <div class="analysis-note" id="analysisNote">
-              This is an educational framework, not a buy or sell recommendation.
+              <span data-i18n="educationalNote">This is an educational framework, not a buy or sell recommendation.</span>
             </div>
           </div>
         </div>
@@ -232,7 +399,7 @@
     </main>
 
     <footer>
-      <p>Bill's Portfolio is a learning project. It is not financial advice.</p>
+      <p data-i18n="footerNote">Bill's Portfolio is a learning project. It is not financial advice.</p>
     </footer>
 
     <script src="script.js"></script>
