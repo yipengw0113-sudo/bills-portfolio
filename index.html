@@ -1,0 +1,240 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bill's Portfolio</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="#top" aria-label="Bill's Portfolio home">
+        <span class="brand-mark">N</span>
+        <span>Bill's Portfolio</span>
+      </a>
+
+      <nav class="nav-links" aria-label="Primary navigation">
+        <a href="#features">Features</a>
+        <a href="#strategy">Strategy</a>
+        <a href="#preview">Preview</a>
+        <a href="#analyzer">Analyzer</a>
+      </nav>
+
+      <a class="header-action" href="#start">Start Tracking</a>
+    </header>
+
+    <main id="top">
+      <section class="hero">
+        <div class="hero-copy">
+          <p class="eyebrow">Portfolio clarity for self-directed investors</p>
+          <h1>Build a sharper view of your money before you make the next move.</h1>
+          <p class="hero-text">
+            Track holdings, compare asset allocation, and turn messy investment notes
+            into a calm dashboard built around risk, return, and discipline.
+          </p>
+          <div class="hero-actions" id="start">
+            <a class="primary-button" href="#preview">View Dashboard</a>
+            <a class="secondary-button" href="#strategy">Explore Strategy</a>
+          </div>
+        </div>
+
+        <div class="hero-panel" aria-label="Portfolio dashboard preview">
+          <div class="panel-topbar">
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+          <div class="portfolio-summary">
+            <div>
+              <p>Total Portfolio</p>
+              <strong>$128,420</strong>
+            </div>
+            <div class="gain-badge">+12.8%</div>
+          </div>
+          <div class="allocation-chart" aria-hidden="true">
+            <span class="bar equity"></span>
+            <span class="bar etf"></span>
+            <span class="bar bond"></span>
+            <span class="bar cash"></span>
+          </div>
+          <div class="holding-list">
+            <div>
+              <span>Equity</span>
+              <strong>46%</strong>
+            </div>
+            <div>
+              <span>ETF</span>
+              <strong>32%</strong>
+            </div>
+            <div>
+              <span>Bonds</span>
+              <strong>14%</strong>
+            </div>
+            <div>
+              <span>Cash</span>
+              <strong>8%</strong>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="metrics" aria-label="Portfolio metrics">
+        <article>
+          <span>Risk Score</span>
+          <strong id="riskScore">68</strong>
+        </article>
+        <article>
+          <span>Holdings</span>
+          <strong>18</strong>
+        </article>
+        <article>
+          <span>Monthly Contribution</span>
+          <strong>$1,200</strong>
+        </article>
+        <article>
+          <span>Target Return</span>
+          <strong>9.5%</strong>
+        </article>
+      </section>
+
+      <section class="section" id="features">
+        <div class="section-heading">
+          <p class="eyebrow">What it helps you see</p>
+          <h2>One workspace for portfolio decisions.</h2>
+        </div>
+
+        <div class="feature-grid">
+          <article>
+            <div class="feature-icon">01</div>
+            <h3>Allocation Map</h3>
+            <p>Understand how much of your money sits in equity, ETFs, bonds, mutual funds, and cash.</p>
+          </article>
+          <article>
+            <div class="feature-icon">02</div>
+            <h3>Return Tracking</h3>
+            <p>Compare cost, current value, unrealized gains, and contribution behavior over time.</p>
+          </article>
+          <article>
+            <div class="feature-icon">03</div>
+            <h3>Decision Notes</h3>
+            <p>Capture why you bought, sold, or held an asset so your future self can audit the logic.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="strategy-band" id="strategy">
+        <div>
+          <p class="eyebrow">Beginner-friendly strategy</p>
+          <h2>High return starts with a clear process, not random confidence.</h2>
+        </div>
+        <div class="strategy-list">
+          <p><strong>Define:</strong> time horizon, goal, account type, and risk tolerance.</p>
+          <p><strong>Diversify:</strong> balance growth assets with stabilizers like bonds and cash.</p>
+          <p><strong>Review:</strong> rebalance based on rules instead of emotional market timing.</p>
+        </div>
+      </section>
+
+      <section class="section preview-section" id="preview">
+        <div class="section-heading">
+          <p class="eyebrow">Interactive preview</p>
+          <h2>Adjust the equity weight and watch the profile change.</h2>
+        </div>
+
+        <div class="calculator">
+          <div class="slider-card">
+            <label for="equityRange">Equity allocation</label>
+            <input id="equityRange" type="range" min="20" max="90" value="60" />
+            <div class="slider-output">
+              <span id="equityValue">60%</span>
+              <span id="profileLabel">Balanced Growth</span>
+            </div>
+          </div>
+
+          <div class="result-card">
+            <p>Estimated volatility profile</p>
+            <strong id="volatilityValue">Medium</strong>
+            <span id="guidanceText">A growth-focused mix with room for stabilizing assets.</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="section market-section" id="market">
+        <div class="section-heading">
+          <p class="eyebrow">Live market data</p>
+          <h2>Check a stock or ETF quote from Twelve Data.</h2>
+        </div>
+
+        <div class="quote-tool">
+          <form class="quote-form" id="quoteForm">
+            <label for="tickerInput">Ticker symbol</label>
+            <div class="quote-input-row">
+              <input id="tickerInput" name="ticker" type="text" value="AAPL" autocomplete="off" />
+              <button type="submit">Get Quote</button>
+            </div>
+          </form>
+
+          <div class="quote-result" id="quoteResult" aria-live="polite">
+            <p>Enter a ticker to retrieve the latest available quote.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="section analyzer-section" id="analyzer">
+        <div class="section-heading">
+          <p class="eyebrow">CFA-style stock analyzer</p>
+          <h2>Turn a ticker and a few fundamentals into valuation signals.</h2>
+        </div>
+
+        <div class="analyzer-layout">
+          <form class="analyzer-form" id="analysisForm">
+            <label>
+              Ticker
+              <input id="analysisTicker" type="text" value="AAPL" autocomplete="off" />
+            </label>
+            <label>
+              EPS
+              <input id="epsInput" type="number" step="0.01" value="7.49" />
+            </label>
+            <label>
+              Book value per share
+              <input id="bookValueInput" type="number" step="0.01" value="4.47" />
+            </label>
+            <label>
+              Annual dividend per share
+              <input id="dividendInput" type="number" step="0.01" value="1.04" />
+            </label>
+            <label>
+              Revenue growth %
+              <input id="growthInput" type="number" step="0.1" value="6.4" />
+            </label>
+            <label>
+              ROE %
+              <input id="roeInput" type="number" step="0.1" value="149.8" />
+            </label>
+            <label>
+              Debt / Equity
+              <input id="debtEquityInput" type="number" step="0.01" value="1.87" />
+            </label>
+            <button type="submit">Analyze Stock</button>
+          </form>
+
+          <div class="analysis-output">
+            <div class="analysis-status" id="analysisStatus">
+              Add assumptions and run the analyzer.
+            </div>
+            <div class="ratio-grid" id="ratioGrid"></div>
+            <div class="analysis-note" id="analysisNote">
+              This is an educational framework, not a buy or sell recommendation.
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <p>Bill's Portfolio is a learning project. It is not financial advice.</p>
+    </footer>
+
+    <script src="script.js"></script>
+  </body>
+</html>

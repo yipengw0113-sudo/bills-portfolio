@@ -1,0 +1,12 @@
+{
+  "name": "bills-portfolio",
+  "version": "1.0.0",
+  "description": "A beginner-friendly investment portfolio landing page and CFA-style stock analyzer.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "engines": {
+    "node": ">=24 <25"
+  }
+}
